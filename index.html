@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Você</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: cursive;
+  background-image: url('fundo.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+/* ===== SEÇÕES ===== */
+.section {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 25px;
+}
+
+/* ===== TEXTO + GATINHO ===== */
+.text-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+}
+
+/* ===== GATINHO QUE PUXA O TEXTO ===== */
+.kitty-pull {
+  width: 60px;
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: 0.8s ease;
+}
+
+/* ===== TEXTO ===== */
+.text {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: 0.8s ease;
+}
+
+/* ===== GIFS DAS SEÇÕES ===== */
+.romantic-img {
+  width: 100%;
+  border-radius: 16px;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: 1s ease;
+}
+
+/* ===== ATIVAÇÃO ===== */
+.active .kitty-pull,
+.active .text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.active .romantic-img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ===== CARTA SURPRESA ===== */
+.carta-wrap {
+  position: relative;
+  text-align: center;
+}
+
+.carta-img {
+  width: 80%;
+  cursor: pointer;
+}
+
+.clica {
+  position: absolute;
+  top: -30px;
+  width: 100%;
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+.texto-secreto {
+  margin-top: 20px;
+  font-size: 1.3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.texto-secreto.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== MÚSICA ===== -->
+<audio id="bgMusic" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ===== SEÇÃO 1 ===== -->
+<div class="section">
+  <div class="text-wrap">
+    <img src="gatinho-puxando.gif" class="kitty-pull">
+    <p class="text">
+      Oi amor sabia que te amo? Em sabia que te amo muito muito você é linda e perfeita muah
+    </p>
+  </div>
+  <img src="gatinho1.gif" class="romantic-img">
+</div>
+
+<!-- ===== SEÇÃO 2 ===== -->
+<div class="section">
+  <div class="text-wrap">
+    <img src="gatinho-puxando.gif" class="kitty-pull">
+    <p class="text">
+      Eu amo seus olhos, cabelo, boca, sorriso, corpo, desenhos, ideias amo até seus braços e pernas
+      amo suas unhas pintadas amo você da ponta da mão até a ponta do pé
+    </p>
+  </div>
+  <img src="gatinho2.gif" class="romantic-img">
+</div>
+
+<!-- ===== SEÇÃO 3 ===== -->
+<div class="section">
+  <div class="text-wrap">
+    <img src="gatinho-puxando.gif" class="kitty-pull">
+    <p class="text">
+      Eu quero que você fique comigo então vou ser o melhor pra você meu amor
+    </p>
+  </div>
+  <img src="gatinho3.gif" class="romantic-img">
+</div>
+
+<!-- ===== SEÇÃO 4 ===== -->
+<div class="section">
+  <div class="text-wrap">
+    <img src="gatinho-puxando.gif" class="kitty-pull">
+    <p class="text">
+      TE AMOOOOOOOOOOKKOOO
+    </p>
+  </div>
+  <img src="gatinho4.gif" class="romantic-img">
+</div>
+
+<!-- ===== SEÇÃO SURPRESA FINAL ===== -->
+<div class="section">
+  <div class="carta-wrap">
+    <div class="clica">clica aqui</div>
+
+    <img src="gatinho-carta.gif" class="carta-img" id="cartaGif">
+
+    <div class="texto-secreto" id="textoSecreto">
+      Você é uma deusa sabia? Acho que não sabe então te falo
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== MÚSICA NO PRIMEIRO TOQUE/SCROLL ===== */
+const music = document.getElementById('bgMusic');
+let musicStarted = false;
+
+function startMusic() {
+  if (!musicStarted) {
+    music.play().catch(()=>{});
+    musicStarted = true;
+  }
+}
+
+window.addEventListener('scroll', startMusic);
+window.addEventListener('touchstart', startMusic);
+window.addEventListener('click', startMusic);
+
+/* ===== ANIMAÇÕES AO ROLAR ===== */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+
+document.querySelectorAll('.section').forEach(sec => observer.observe(sec));
+
+/* ===== CARTA SURPRESA ===== */
+const carta = document.getElementById('cartaGif');
+const texto = document.getElementById('textoSecreto');
+const clica = document.querySelector('.clica');
+
+let aberta = false;
+
+carta.addEventListener('click', () => {
+  if (aberta) return;
+  aberta = true;
+
+  clica.style.display = 'none';
+
+  const src = carta.src;
+  carta.src = '';
+  carta.src = src;
+
+  setTimeout(() => {
+    texto.classList.add('show');
+  }, 400);
+});
+</script>
+
+</body>
+</html>
